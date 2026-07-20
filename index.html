@@ -1,0 +1,166 @@
+<!DOCTYPE html><html><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">  <title>Java Code Generator</title>  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      background: #222;
+      border: 1px solid #555;
+      border-radius: 8px;
+      outline: none;
+      margin-bottom: 15px;
+    }
+
+    input::placeholder {
+      color: #aaa;
+      font-weight: normal;
+    }
+
+    .box {
+      background: #1e1e1e;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+
+    pre {
+      font-family: monospace;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    span {
+      color: #00ff88;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style></head><body><input
+type="text"
+id="text"
+placeholder="home,search,profile"
+
+«»
+
+  <div class="box"><pre>
+ import androidx.fragment.app.Fragment;
+import android.view.View;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.os.Bundle;
+
+public class <span></span>Fragment extends Fragment{
+
+public <span></span>Fragment(){
+
+}
+
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+    return inflater.inflate(R.layout.<span></span>, parent, false);
+}
+
+}</pre>
+
+<button id="copyBtn">Copy Text</button>
+
+  </div>  <script>
+
+    const input = document.getElementById("text");
+    const spans = document.querySelectorAll("pre span");
+    const copyBtn = document.getElementById("copyBtn");
+
+    let names = [];
+    let currentIndex = 0;
+
+
+    // Input se names ko array me convert karna
+    input.addEventListener("input", function () {
+
+      names = input.value
+        .split(",")
+        .map(name => name.trim())
+        .filter(name => name !== "");
+
+      currentIndex = 0;
+
+    });
+
+
+    // Copy button
+    copyBtn.addEventListener("click", async function () {
+
+      if (names.length === 0) {
+        alert("Pehle name likho!");
+        return;
+      }
+
+
+      // Current name
+      let name = names[currentIndex];
+
+
+      // home -> Home
+      let fragmentName =
+        name.charAt(0).toUpperCase() +
+        name.slice(1).toLowerCase();
+
+
+      // home -> fragment_home
+      let layoutName =
+        "fragment_" + name.toLowerCase();
+
+
+      // Code me name set karna
+      spans[0].textContent = fragmentName;
+      spans[1].textContent = fragmentName;
+      spans[2].textContent = layoutName;
+
+
+      // Complete Java code copy karna
+      let code = document.querySelector("pre").innerText;
+
+      await navigator.clipboard.writeText(code);
+
+
+      copyBtn.textContent =
+        "Copied: " + fragmentName;
+
+
+      // Next name
+      currentIndex++;
+
+
+      // Last ke baad phir first
+      if (currentIndex >= names.length) {
+        currentIndex = 0;
+      }
+
+
+      setTimeout(function () {
+        copyBtn.textContent = "Copy Text";
+      }, 1500);
+
+    });
+
+  </script></body></html>
